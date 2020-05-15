@@ -13,6 +13,9 @@
  */
 package org.datatori.presto.importer;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import static io.airlift.airline.SingleCommand.singleCommand;
 
 public final class PrestoImporter
@@ -21,13 +24,26 @@ public final class PrestoImporter
 
     public static void main(String[] args)
     {
-        Console console = singleCommand(Console.class).parse(args);
+        try {
+            Console console = singleCommand(Console.class).parse(args);
+            if (console.helpOption.showHelpIfRequested() ||
+                    console.versionOption.showVersionIfRequested()) {
+                return;
+            }
 
-        if (console.helpOption.showHelpIfRequested() ||
-                console.versionOption.showVersionIfRequested()) {
-            return;
+            System.exit(console.run() ? 0 : 1);
         }
-
-        System.exit(console.run() ? 0 : 1);
+        catch (RuntimeException e) {
+            Optional<Throwable> rootCause = Stream.iterate(e, Throwable::getCause)
+                    .filter(element -> element.getCause() == null)
+                    .findFirst();
+            if (rootCause.isPresent()) {
+                System.err.println(rootCause.get().getMessage());
+            }
+            else {
+                throw e;
+            }
+            System.exit(1);
+        }
     }
 }

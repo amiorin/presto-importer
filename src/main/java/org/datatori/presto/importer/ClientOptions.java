@@ -26,7 +26,7 @@ public class ClientOptions
     @Option(name = "--password", title = "password", description = "Prompt for password")
     public boolean password;
 
-    @Option(name = "--table", title = "table", description = "Table")
+    @Option(name = "--table", title = "table", required = true, description = "Table")
     public String table;
 
     @Option(name = {"--batch-size"}, title = "batch-size", description = "Max batch size")
@@ -35,7 +35,7 @@ public class ClientOptions
     @Option(name = "--drop-create", title = "drop-create", description = "Drop and create a table")
     public boolean dropCreate = true;
 
-    @Option(name = {"-f", "--file"}, title = "file", description = "Execute statements from file and exit")
+    @Option(name = {"--file", "-f"}, title = "file", required = true, description = "Execute statements from file and exit")
     public String file;
 
     @Option(name = "--input-format", title = "input-format", description = "Input format for batch mode [CSV, TSV, CSV_UNQUOTED] (default: CSV_UNQUOTED)")

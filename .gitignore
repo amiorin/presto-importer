@@ -1,4 +1,8 @@
 .idea/
 target/
 *.csv
-presto-io.iml
+*.swp
+.classpath
+.project
+*.iml
+.settings
